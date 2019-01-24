@@ -28,7 +28,8 @@ You can simply download the "VeChain Smart Contract Sample App"
 
 8. From the terminal, cd /projects/vechain-sc-deploy
  
- `cd /projects/vechain-sc-deploy` 
+ `cd /projects/vechain-sc-deploy`
+
 9. Compile and deploy smart contracts to vechain
 
  `truffle compile && truffle migrate`

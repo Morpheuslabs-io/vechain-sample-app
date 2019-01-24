@@ -26,9 +26,7 @@ You can simply download the "VeChain Smart Contract Sample App"
 
  `web3-gear --endpoint {url}` 
 
-8. From the terminal, cd /projects/vechain-sc-deploy
- 
- `cd /projects/vechain-sc-deploy`
+8. From the terminal, cd to the directory of the application
 
 9. Compile and deploy smart contracts to vechain
 

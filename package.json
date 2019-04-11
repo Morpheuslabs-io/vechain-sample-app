@@ -1,19 +1,27 @@
 {
-  "name": "morpheus-example",
+  "name": "vechain-dapp-sample",
   "version": "1.0.0",
-  "description": "",
-  "main": "truffle-config.js",
+  "description": "VeChain Sample Smart Contracts ==============================",
+  "main": "truffle.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/sangopen/vechain-dapp-sample.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/sangopen/vechain-dapp-sample/issues"
+  },
+  "homepage": "https://gitlab.com/sangopen/vechain-dapp-sample#readme",
   "dependencies": {
-    "thorify": "^1.0.4",
-    "truffle": "^4.1.15",
+    "thorify": "^1.1.1",
     "web3": "^1.0.0-beta.37"
   }
 }

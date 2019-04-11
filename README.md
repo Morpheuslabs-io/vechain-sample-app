@@ -32,4 +32,7 @@ You can simply download the "VeChain Smart Contract Sample App"
 
  `truffle compile && truffle migrate`
 
-# vechain
+# Run sample to interact with contract from NodeJS
+1. Run `npm install`
+2. Run `node web3-thorify-example.js`
+In `web3-thorify-example.js`, There are several function to show how to interact with VeChain from NodeJS includes(sending VET, deploy contract, call contract, send contract transaction)

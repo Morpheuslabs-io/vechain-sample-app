@@ -1,12 +1,10 @@
 'use strict'
 const Web3 = require('web3')
 const thorify = require('thorify').thorify
-
 // https://github.com/vechain/thor-devkit.js
-const { cry, Transaction } = require('thor-devkit')
-
-const web3 = thorify(new Web3(), "http://localhost:8669")
-
+// const { cry, Transaction } = require('thor-devkit')
+const network = "http://127.0.0.1:8669"
+const web3 = thorify(new Web3(), network);
 
 /**
  * 本文件涉及的演示场景如下：
@@ -18,6 +16,8 @@ const web3 = thorify(new Web3(), "http://localhost:8669")
  * 5. 使用外部签名工具签名交易
  * 
  */
+
+// web3.eth.getBlock("latest").then(res => console.log(res));
 
 
 async function SimpleExamples() {
@@ -38,6 +38,7 @@ async function SimpleExamples() {
 }
 
 async function VETTransfer() {
+    
     // 导入账户
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
@@ -46,6 +47,7 @@ async function VETTransfer() {
     web3.eth.accounts.wallet.add(sender.privateKey)
 
     let receiver = '0xd3ae78222beadb038203be21ed5ce7c9b1bff602'
+    console.log("Transfer VET to ", receiver)
 
     return web3.eth.sendTransaction({
         from: sender.address,
@@ -53,12 +55,14 @@ async function VETTransfer() {
         value: web3.utils.toWei('1', 'ether')
     }).then(receipt => {
         console.log(receipt)
+
     })
 }
 
 
 async function DeployContract() {
     // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    console.log("Deploy new contract to network")
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
         privateKey: '0xdce1443bd2ef0c2631adc1c67e5c93f13dc23a41c18b536effbbdcbcdb96fb65'
@@ -73,7 +77,7 @@ async function DeployContract() {
     return contract.deploy({data: KVStorage.bytecode, arguments: ["test-contract-1"]})
     .send({ from: sender.address, gas: 3000000 })
     .then(receipt => {
-        console.log(receipt)
+        console.log("Contract deployed address", receipt['_address'])
         // 返回合约地址
         return receipt['_address']
     })
@@ -82,6 +86,7 @@ async function DeployContract() {
 
 async function ContractCall(address) {
     // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    console.log("Contract call contract address:", address)
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
         privateKey: '0xdce1443bd2ef0c2631adc1c67e5c93f13dc23a41c18b536effbbdcbcdb96fb65'
@@ -102,6 +107,7 @@ async function ContractCall(address) {
 
 async function ContractTransaction(address) {
     // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    console.log("Contract set data, contract address: ", address)
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
         privateKey: '0xdce1443bd2ef0c2631adc1c67e5c93f13dc23a41c18b536effbbdcbcdb96fb65'
@@ -167,3 +173,4 @@ async function SignWithOutPrivateKey() {
     let rawTx = tx.encode() // Buffer
     return '0x' + rawTx.toString('hex')
 }
+SimpleExamples();

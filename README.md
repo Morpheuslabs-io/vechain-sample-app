@@ -34,5 +34,7 @@ You can simply download the "VeChain Smart Contract Sample App"
 
 # Run sample to interact with contract from NodeJS
 1. Run `npm install`
-2. Run `node web3-thorify-example.js`
+2. Edit `web3-thorify-example.js` file, looking for network variable and change it to `{url}` of your vechain solo mode (internal URL)
+Example: `const network = "http://bops-t.morpheuslabs.io:23275"`
+3. Run `node web3-thorify-example.js`
 In `web3-thorify-example.js`, There are several function to show how to interact with VeChain from NodeJS includes(sending VET, deploy contract, call contract, send contract transaction)

@@ -7,13 +7,13 @@ const network = "http://127.0.0.1:8669"
 const web3 = thorify(new Web3(), network);
 
 /**
- * 本文件涉及的演示场景如下：
+ * The following samples scenarios are included
  * 
- * 1. VET转账
- * 2. 合约部署
- * 3. 合约调用
- * 4. 合约交易
- * 5. 使用外部签名工具签名交易
+ * 1. VET transfer
+ * 2. Smart contract deployment
+ * 3. Call smart contract functions
+ * 4. Smart contract transactions
+ * 5. Sign transactions
  * 
  */
 
@@ -21,25 +21,25 @@ const web3 = thorify(new Web3(), network);
 
 
 async function SimpleExamples() {
-    // 1. VET转账
+    // 1. VET transfer
     await VETTransfer()
 
-    // 2. 合约部署
+    // 2. Smart contract deployment
     let address = await DeployContract()
 
-    // 3. 合约调用
+    // 3. Call smart contract functions
     await ContractCall(address)
 
-    // 4. 合约交易
+    // 4. Smart contract transactions
     await ContractTransaction(address)
 
-    // 5. 使用外部签名工具签名交易，这个方法暂时无法执行
+    // 5. Sign transactions, this functions is not available yet
     // await SignWithOutPrivateKey()
 }
 
 async function VETTransfer() {
     
-    // 导入账户
+    // Account setup
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
         privateKey: '0xdce1443bd2ef0c2631adc1c67e5c93f13dc23a41c18b536effbbdcbcdb96fb65'
@@ -61,7 +61,7 @@ async function VETTransfer() {
 
 
 async function DeployContract() {
-    // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    // Setup account，this is one time work
     console.log("Deploy new contract to network")
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
@@ -69,7 +69,7 @@ async function DeployContract() {
     }
     // web3.eth.accounts.wallet.add(sender.privateKey)
     
-    // 获取合约ABI和Bytecode
+    // Get smart contract ABI and Bytecode
     let KVStorage = require('./build/contracts/KVStorage.json')
 
     let contract = new web3.eth.Contract(KVStorage.abi)
@@ -78,14 +78,14 @@ async function DeployContract() {
     .send({ from: sender.address, gas: 3000000 })
     .then(receipt => {
         console.log("Contract deployed address", receipt['_address'])
-        // 返回合约地址
+        // Return smart contract address
         return receipt['_address']
     })
 }
 
 
 async function ContractCall(address) {
-    // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    // Setup account，this is one time work
     console.log("Contract call contract address:", address)
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
@@ -93,7 +93,7 @@ async function ContractCall(address) {
     }
     // web3.eth.accounts.wallet.add(sender.privateKey)
 
-    // 获取合约ABI和Bytecode
+    // Get smart contract ABI and Bytecode
     let KVStorage = require('./build/contracts/KVStorage.json')
 
     let contract = new web3.eth.Contract(KVStorage.abi, address)
@@ -106,7 +106,7 @@ async function ContractCall(address) {
 
 
 async function ContractTransaction(address) {
-    // 导入账号，VETTransfer中以导入这里就不再重复操作了
+    // Setup account，this is one time work
     console.log("Contract set data, contract address: ", address)
     let sender = {
         address: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
@@ -114,7 +114,7 @@ async function ContractTransaction(address) {
     }
     // web3.eth.accounts.wallet.add(sender.privateKey)
 
-    // 获取合约ABI和Bytecode
+    // Get smart contract ABI and Bytecode
     let KVStorage = require('./build/contracts/KVStorage.json')
 
     let contract = new web3.eth.Contract(KVStorage.abi, address)
@@ -122,7 +122,7 @@ async function ContractTransaction(address) {
     let key = "0x496699b551fae009387328298b517b0b8be1c99f42d31ef2793ffcee5a7a316b"
     let value = "0x4de71f2d588aa8a1ea00fe8312d92966da424d9939a511fc0be81e65fad52af8"
 
-    // 设置KV存储
+    // Setup KV storage
     return contract.methods.set(key, value)
     .send({ from: sender.address, gas: 500000 })
     .then(receipt => {
@@ -131,11 +131,11 @@ async function ContractTransaction(address) {
 }
 
 
-// 私钥在外部环境时
+// Private key in an external environment
 async function SignWithOutPrivateKey() {
-    // 该方法将演示
-    // 1. 如何生成待签名的messageHash
-    // 2. 使用外部签名工具签名之后，生成RawTransaction
+    // This will demo
+    // 1. How to generate messageHash
+    // 2. Use external signing toll to generate RawTransaction
 
     let clauses =  [{
         to: '0x7567d83b7b8d80addcb281a71d54fc7b3364ffed',
@@ -160,13 +160,13 @@ async function SignWithOutPrivateKey() {
     let tx = new Transaction(txBody)
     let messageHash = cry.blake2b256(tx.encode()) // Buffer
 
-    // 使用外部签名工具签名messageHash
+    // Use external tool to sign messageHash
     let signature = SignTx(messageHash)
 
-    // 设置交易签名，要求signature为Buffer类型
+    // Set transaction signature，this requires signature as Buffer type
     tx.signature = signature
 
-    // 签完名的交易可以查询signer和txId
+    // Transactions signed by be queried by signer and txId
     // let txId = tx.id
     // let signer = tx.signer
 
